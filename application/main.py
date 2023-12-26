@@ -72,13 +72,12 @@ st.title("New York Crime Prediction")
 gender, race, age, predict, date, hour, place= get_user_informations()
 base_map = generateBaseMap()
 click = ClickForLatLng()
-base_map.add_child(click)
 
-lat_long = click.lat_long
-if len(lat_long) == 2:
-    lat = lat_long[0]
-    long = lat_long[1]
-
+if hasattr(click, 'lat_long'):
+    lat_long = click.lat_long
+    if len(lat_long) == 2:
+        lat = lat_long[0]
+        long = lat_long[1]
 else :
     lat = ""
     long = ""
