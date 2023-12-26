@@ -51,6 +51,8 @@ if input_method == "Text Input":
     destination = st.text_input("Enter your destination:")
     if st.button("Get Coordinates"):
         coordinates = get_coordinates(destination)
+        lat=coordinates[0]
+        long=coordinates[1]
         if coordinates:
             st.success(f"Coordinates for {destination}: {coordinates}")
             # Create a map with the destination marker
@@ -62,7 +64,6 @@ if input_method == "Text Input":
             st.error("Unable to retrieve coordinates for the given destination.")
 
 elif input_method == "Map Click":
-    #gender, race, age, predict, date, hour, place = get_user_information()
     base_map = generate_base_map()
     base_map.add_child(folium.LatLngPopup())
 
@@ -74,6 +75,8 @@ elif input_method == "Map Click":
 
     lat = data[0]
     long = data[1]
+
+    
 """
 if predict:
     if lat=='' or long == '':
