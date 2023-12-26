@@ -1,8 +1,19 @@
 import streamlit as st
 import folium
-from streamlit_folium import st_folium
+from streamlit_folium import st_folium,folium_static
+from geopy.geocoders import Nominatim
 from datetime import datetime
 import backend as backend
+
+def get_coordinates(destination):
+    geolocator = Nominatim(user_agent="NYC_crimes")
+    location = geolocator.geocode(destination)
+
+    if location:
+        return location.latitude, location.longitude
+    else:
+        return None
+
 def get_pos(lat,lng):
     return lat,lng
 
@@ -29,6 +40,20 @@ def get_user_information():
     return gender, race, age, predict, date, hour, place
 
 st.title("New York Crime Prediction")
+
+destination = st.text_input("Enter your destination:")
+if st.button("Get Coordinates"):
+    coordinates = get_coordinates(destination)
+    if coordinates:
+        st.success(f"Coordinates for {destination}: {coordinates}")
+        # Create a map with the destination marker
+        base_map = folium.Map(location=coordinates, zoom_start=15)
+        folium.Marker(location=coordinates, popup=destination).add_to(base_map)
+        # Display the map
+        folium_static(base_map)
+    else:
+        st.error("Unable to retrieve coordinates for the given destination.")
+
 gender, race, age, predict, date, hour, place = get_user_information()
 base_map = generate_base_map()
 base_map.add_child(folium.LatLngPopup())
