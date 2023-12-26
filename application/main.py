@@ -62,7 +62,7 @@ if input_method == "Text Input":
             st.error("Unable to retrieve coordinates for the given destination.")
 
 elif input_method == "Map Click":
-    gender, race, age, predict, date, hour, place = get_user_information()
+    #gender, race, age, predict, date, hour, place = get_user_information()
     base_map = generate_base_map()
     base_map.add_child(folium.LatLngPopup())
 
