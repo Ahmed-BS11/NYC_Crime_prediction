@@ -52,24 +52,24 @@ def generateBaseMap(default_location=[40.704467, -73.892246], default_zoom_start
     return base_map
 
 
-def init():
+def get_user_informations():
     with st.sidebar:
-        st.header("Enter your information", )
-        gender = st.radio("Gender:", ["Male","Female"],key="vic")
-        race = st.selectbox("Race:",['WHITE', 'WHITE HISPANIC', 'BLACK', 'ASIAN / PACIFIC ISLANDER', 'BLACK HISPANIC', 'AMERICAN INDIAN/ALASKAN NATIVE', 'OTHER'],key="vic")
-        age = st.slider("Age:",0,120,key="vic")
-        date = st.date_input("Date:",datetime.now())
-        hour = st.slider("Hour:",min_value=0,max_value=24)
-        place = st.radio("Place:",("In park","In public housing","In station"))
-        _,col,_ = st.sidebar.columns(3)   
-        with  col:
-            predict = st.button("predict")
-        
+        st.header("Enter your information")
+        gender = st.radio("Gender:", ["Male", "Female"], key="vic1")
+        race = st.selectbox("Race:", ['WHITE', 'WHITE HISPANIC', 'BLACK', 'ASIAN / PACIFIC ISLANDER', 'BLACK HISPANIC', 'AMERICAN INDIAN/ALASKAN NATIVE', 'OTHER'], key="vic2")
+        age = st.slider("Age:", 0, 120, key="vic3")
+        date = st.date_input("Date:", datetime.now())
+        hour = st.slider("Hour:", min_value=0, max_value=24)
+        place = st.radio("Place:", ("In park", "In public housing", "In station"))
+        _, col, _ = st.sidebar.columns(3)
+        with col:
+            predict = st.button("Predict")
+
     return gender, race, age, predict, date, hour, place
 
 
 st.title("New York Crime Prediction")
-gender, race, age, predict, date, hour, place= init()
+gender, race, age, predict, date, hour, place= get_user_informations()
 base_map = generateBaseMap()
 click = ClickForLatLng()
 base_map.add_child(click)
