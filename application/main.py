@@ -26,7 +26,7 @@ def generate_base_map(default_location=[40.704467, -73.892246], default_zoom_sta
 def get_user_information():
     with st.sidebar:
         st.header("Enter your information")
-        gender = st.radio("Gender:", ["Male", "Female"], key="vic1")
+        gender = st.radio("Gender:", ["Male", "Female"], key="vic")
         race = st.selectbox("Race:", ['WHITE', 'WHITE HISPANIC', 'BLACK', 'ASIAN / PACIFIC ISLANDER', 'BLACK HISPANIC',
                                       'AMERICAN INDIAN/ALASKAN NATIVE', 'OTHER'], key="vic2")
         age = st.slider("Age:", 0, 120, key="vic3")
@@ -39,33 +39,40 @@ def get_user_information():
 
     return gender, race, age, predict, date, hour, place
 
+def get_user_input_method():
+    return st.radio("Choose input method:", ["Text Input", "Map Click"])
+
 st.title("New York Crime Prediction")
+get_user_information()
+input_method = get_user_input_method()
 
-destination = st.text_input("Enter your destination:")
-if st.button("Get Coordinates"):
-    coordinates = get_coordinates(destination)
-    if coordinates:
-        st.success(f"Coordinates for {destination}: {coordinates}")
-        # Create a map with the destination marker
-        base_map = folium.Map(location=coordinates, zoom_start=15)
-        folium.Marker(location=coordinates, popup=destination).add_to(base_map)
-        # Display the map
-        folium_static(base_map)
-    else:
-        st.error("Unable to retrieve coordinates for the given destination.")
+if input_method == "Text Input":
+    destination = st.text_input("Enter your destination:")
+    if st.button("Get Coordinates"):
+        coordinates = get_coordinates(destination)
+        if coordinates:
+            st.success(f"Coordinates for {destination}: {coordinates}")
+            # Create a map with the destination marker
+            base_map = folium.Map(location=coordinates, zoom_start=15)
+            folium.Marker(location=coordinates, popup=destination).add_to(base_map)
+            # Display the map
+            folium_static(base_map)
+        else:
+            st.error("Unable to retrieve coordinates for the given destination.")
 
-gender, race, age, predict, date, hour, place = get_user_information()
-base_map = generate_base_map()
-base_map.add_child(folium.LatLngPopup())
+elif input_method == "Map Click":
+    gender, race, age, predict, date, hour, place = get_user_information()
+    base_map = generate_base_map()
+    base_map.add_child(folium.LatLngPopup())
 
-map = st_folium(base_map, height=350, width=700)
-data = get_pos(map['last_clicked']['lat'],map['last_clicked']['lng'])
+    map = st_folium(base_map, height=350, width=700)
+    data = get_pos(map['last_clicked']['lat'], map['last_clicked']['lng'])
 
-if data is not None:
-    st.write(data)
+    if data is not None:
+        st.write(data)
 
-lat=data[0]
-long=data[1]
+    lat = data[0]
+    long = data[1]
 
 if predict:
     if lat=='' or long == '':
