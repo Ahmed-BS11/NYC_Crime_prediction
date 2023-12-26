@@ -74,7 +74,7 @@ elif input_method == "Map Click":
 
     lat = data[0]
     long = data[1]
-
+"""
 if predict:
     if lat=='' or long == '':
         st.error("Please make sure that you selected a location on the map")    
@@ -86,3 +86,4 @@ if predict:
         st.markdown(f"You are likely to be a victim of: **{pred}**")
         st.markdown(f"#### Some of the crimes types are the following: ")
         st.markdown(crimes)
+"""
