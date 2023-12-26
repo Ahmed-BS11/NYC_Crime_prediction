@@ -7,7 +7,6 @@ import folium
 import pandas as pd
 from streamlit_folium import folium_static
 from datetime import datetime
-import clipboard
 from branca.element import Template, MacroElement
 import backend as backend
 
@@ -41,7 +40,7 @@ class ClickForLatLng(MacroElement):
         self._name = 'ClickForLatLng'
         self.format_str = 'lat + "," + lng'
         self.alert = True
-        self.lat_long = clipboard.paste().split(',')
+        #self.lat_long = clipboard.paste().split(',')
         if popup:
             self.popup = ''.join(['"', popup, '"'])
         else:
