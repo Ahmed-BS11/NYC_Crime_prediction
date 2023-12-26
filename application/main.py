@@ -1,4 +1,8 @@
 import streamlit as st
+
+import subprocess
+subprocess.run(['pip', 'install', 'folium'])
+
 import folium
 import pandas as pd
 from streamlit_folium import folium_static
