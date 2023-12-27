@@ -19,20 +19,26 @@ def get_coordinates(destination):
 def get_pos(lat,lng):
     return lat,lng
 
-shapefile=r'application/geo_export_84578745-538d-401a-9cb5-34022c705879.shp'
-def get_precinct_and_borough(lat, long):
-    # Load the shapefile
-    gdf = gpd.read_file(shapefile)
+shapefile='geo_export_84578745-538d-401a-9cb5-34022c705879.shp'
+borough='borough/nybb.shp'
+def get_precinct_and_borough(lat, lon):
+    # Load the shapefiles
+    precinct_gdf = gpd.read_file(shapefile)
+    borough_gdf = gpd.read_file(borough)
 
     # Create a Point object from the coordinates
-    point = Point(long, lat)
+    point = Point(lon, lat)
 
-    # Find the precinct that contains the point
-    for _, row in gdf.iterrows():
+    # Find the precinct and borough that contains the point
+    precinct = None
+    borough = None
+    for _, row in precinct_gdf.iterrows():
         if row['geometry'].contains(point):
-            print(row)
-            return row['precinct'], row['borough']
-    return None
+            precinct = row['precinct']
+    for _, row in borough_gdf.iterrows():
+        if row['geometry'].contains(point):
+            borough = row['borough']
+    return precinct, borough
 
 
 def generate_base_map(default_location=[40.704467, -73.892246], default_zoom_start=11, min_zoom=11, max_zoom=15):
