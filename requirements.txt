@@ -11,3 +11,5 @@ scikit-plot
 xgboost
 lightgbm
 geopy
+geopandas
+shapely
