@@ -82,7 +82,8 @@ st.title("New York Crime Prediction")
 input_method = get_user_input_method()
 gender, race, age, date, hour, place=get_user_information("gender","race","place")
 
-
+lat=''
+long=''
 if input_method == "Text Input":
     destination = st.text_input("Enter your destination:")
     if st.button("Get Coordinates"):
