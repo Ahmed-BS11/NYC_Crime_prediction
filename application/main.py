@@ -83,7 +83,7 @@ def get_user_input_method():
 
 st.title("New York Crime Prediction")
 input_method = get_user_input_method()
-get_user_information("gender","race","place")
+gender, race, age, predict, date, hour, place=get_user_information("gender","race","place")
 
 
 if input_method == "Text Input":
@@ -124,16 +124,15 @@ elif input_method == "Map Click":
     st.success(f'precinct = {precinct},borough ={borough} ')
 
     
-"""
+
 if predict:
-    if lat=='' or long == '':
+    if lat=='' or long == '' or precinct==None :
         st.error("Please make sure that you selected a location on the map")    
         if st.button("Okay"):
             pass
     else:
-        X = backend.create_df(hour,date.month,date.day,lat,long,place,age,race,gender)
+        X = backend.create_df(date, hour, lat, long, place, age, race, gender, precinct, borough)
         pred, crimes = backend.predict(X)
         st.markdown(f"You are likely to be a victim of: **{pred}**")
         st.markdown(f"#### Some of the crimes types are the following: ")
         st.markdown(crimes)
-"""
