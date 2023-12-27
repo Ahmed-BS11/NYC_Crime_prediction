@@ -1,6 +1,6 @@
 import streamlit as st
 import folium
-from streamlit_folium import st_folium,folium_static
+from streamlit_folium import st_folium
 from geopy.geocoders import Nominatim
 from datetime import datetime
 import backend as backend
