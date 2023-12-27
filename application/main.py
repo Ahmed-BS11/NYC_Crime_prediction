@@ -114,28 +114,32 @@ elif input_method == "Select destination on Map":
     base_map.add_child(folium.LatLngPopup())
 
     map = st_folium(base_map, height=350, width=700)
-    data = get_pos(map['last_clicked']['lat'], map['last_clicked']['lng'])
+    if map['last_clicked'] is not None:
+        data = get_pos(map['last_clicked']['lat'], map['last_clicked']['lng'])
+        if data is not None:
+            st.write(data)
 
-    if data is not None:
-        st.write(data)
-
-    lat = data[0]
-    long = data[1]
-    precinct,borough=get_precinct_and_borough(lat, long)
-    print(precinct,borough)
-    st.success(f"Coordinates are {lat}: {long}")
-    st.success(f'precinct = {precinct},borough ={borough} ')
-    _, col, _ = st.columns(3)
-    with col:
-        predict = st.button("Predict", key="predict")
-    if predict:
-        if lat=='' or long == '' or precinct==None :
-            st.error("Please make sure that you selected a location on the map")    
-            if st.button("Okay"):
-                pass
-        else:
-            X = backend.create_df(date, hour, lat, long, place, age, race, gender, precinct, borough)
-            pred, crimes = backend.predict(X)
-            st.markdown(f"You are likely to be a victim of a : **{pred}** crime")
-            st.markdown(f"#### Some of the crimes types are the following: ")
-            st.markdown(crimes)
+        lat = data[0]
+        long = data[1]
+        precinct,borough=get_precinct_and_borough(lat, long)
+        print(precinct,borough)
+        st.success(f"Coordinates are {lat}: {long}")
+        st.success(f'precinct = {precinct},borough ={borough} ')
+        _, col, _ = st.columns(3)
+        with col:
+            predict = st.button("Predict", key="predict")
+        if predict:
+            if lat=='' or long == '' or precinct==None :
+                st.error("Please make sure that you selected a location on the map")    
+                if st.button("Okay"):
+                    pass
+            else:
+                X = backend.create_df(date, hour, lat, long, place, age, race, gender, precinct, borough)
+                pred, crimes = backend.predict(X)
+                st.markdown(f"You are likely to be a victim of a : **{pred}** crime")
+                st.markdown(f"#### Some of the crimes types are the following: ")
+                st.markdown(crimes)
+    else:
+        # Provide default values or handle the case when last_clicked is None
+        data = None
+    
