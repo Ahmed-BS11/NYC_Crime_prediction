@@ -84,7 +84,7 @@ gender, race, age, date, hour, place=get_user_information("gender","race","place
 
 lat=''
 long=''
-if input_method == "Text Input":
+if input_method == "Type your destination":
     destination = st.text_input("Enter your destination:")
     _, col, _ = st.columns(3)
     with col:
@@ -109,7 +109,7 @@ if input_method == "Text Input":
         st.markdown(f"#### Some of the crimes types are the following: ")
         st.markdown(crimes)
 
-elif input_method == "Map Click":
+elif input_method == "Select destination on Map":
     base_map = generate_base_map()
     base_map.add_child(folium.LatLngPopup())
 
