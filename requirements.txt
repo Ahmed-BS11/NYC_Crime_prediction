@@ -13,3 +13,4 @@ lightgbm
 geopy
 geopandas
 shapely
+pyproj

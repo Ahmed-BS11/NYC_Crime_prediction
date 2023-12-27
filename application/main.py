@@ -6,6 +6,7 @@ from datetime import datetime
 import backend as backend
 import geopandas as gpd
 from shapely.geometry import Point
+from pyproj import Proj, transform
 
 def get_coordinates(destination):
     geolocator = Nominatim(user_agent="NYC_crimes")
@@ -19,15 +20,26 @@ def get_coordinates(destination):
 def get_pos(lat,lng):
     return lat,lng
 
+def lon_lat_to_utm(lon, lat):
+    # Define the projection for UTM (EPSG:2263)
+    utm_proj = Proj(init="epsg:2263")
+
+    # Transform latitude and longitude to UTM coordinates
+    utm_x, utm_y = transform(Proj(init="epsg:4326"), utm_proj, lon, lat)
+
+    return utm_x, utm_y
+
 shapefile='geo_export_84578745-538d-401a-9cb5-34022c705879.shp'
-borough='borough/nybb.shp'
+borough_sh='borough/nybb.shp'
+
 def get_precinct_and_borough(lat, lon):
     # Load the shapefiles
     precinct_gdf = gpd.read_file(shapefile)
-    borough_gdf = gpd.read_file(borough)
+    borough_gdf = gpd.read_file(borough_sh)
 
     # Create a Point object from the coordinates
     point = Point(lon, lat)
+    point2=Point(lon_lat_to_utm(lon, lat))
 
     # Find the precinct and borough that contains the point
     precinct = None
@@ -36,8 +48,10 @@ def get_precinct_and_borough(lat, lon):
         if row['geometry'].contains(point):
             precinct = row['precinct']
     for _, row in borough_gdf.iterrows():
-        if row['geometry'].contains(point):
-            borough = row['borough']
+        #print(row)
+        if row['geometry'].contains(point2):
+            borough = row['BoroName']
+            break  # Exit the loop once a match is found
     return precinct, borough
 
 
@@ -70,6 +84,7 @@ def get_user_input_method():
 st.title("New York Crime Prediction")
 input_method = get_user_input_method()
 get_user_information("gender","race","place")
+
 
 if input_method == "Text Input":
     destination = st.text_input("Enter your destination:")
