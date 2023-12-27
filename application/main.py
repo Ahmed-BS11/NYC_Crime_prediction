@@ -92,7 +92,10 @@ if input_method == "Text Input":
         long=coordinates[1]
         precinct,borough=get_precinct_and_borough(lat, long)
         print(precinct,borough)
-        if coordinates:
+        _, col, _ = st.columns(3)
+        with col:
+            predict = st.button("Predict", key="predict")
+        if predict:
             st.success(f"Coordinates for {destination}: {coordinates}")
             st.success(f'precinct = {precinct},borough ={borough} ')
             # Create a map with the destination marker
@@ -100,10 +103,6 @@ if input_method == "Text Input":
             folium.Marker(location=coordinates, popup=destination).add_to(base_map)
             # Display the map
             folium_static(base_map)
-            _, col, _ = st.columns(3)
-            with col:
-                predict = st.button("Predict", key="predict")
-        if predict:
             X = backend.create_df(date, hour, lat, long, place, age, race, gender, precinct, borough)
             pred, crimes = backend.predict(X)
             st.markdown(f"You are likely to be a victim of: **{pred}**")
