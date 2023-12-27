@@ -82,7 +82,6 @@ st.title("New York Crime Prediction")
 input_method = get_user_input_method()
 gender, race, age, date, hour, place=get_user_information("gender","race","place")
 
-
 if input_method == "Text Input":
     destination = st.text_input("Enter your destination:")
     
@@ -102,7 +101,8 @@ if input_method == "Text Input":
             folium.Marker(location=coordinates, popup=destination).add_to(base_map)
             
             # Display the map
-            folium_static(base_map)
+            map_container = st.empty()
+            map_container.folium_static(base_map)
             
             _, col, _ = st.columns(3)
             
