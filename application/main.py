@@ -6,7 +6,6 @@ from datetime import datetime
 import backend as backend
 import geopandas as gpd
 from shapely.geometry import Point
-import os
 
 def get_coordinates(destination):
     geolocator = Nominatim(user_agent="NYC_crimes")
@@ -20,12 +19,10 @@ def get_coordinates(destination):
 def get_pos(lat,lng):
     return lat,lng
 
-shapefile=r'C:\Users\ahmed\Desktop\Supcom\INDP3_AIM\P2\NYC_Crime_prediction\application\geo_export_84578745-538d-401a-9cb5-34022c705879.shp'
-absolute_path = os.path.abspath(shapefile)
-
+shapefile=r'application/geo_export_84578745-538d-401a-9cb5-34022c705879.shp'
 def get_precinct_and_borough(lat, long):
     # Load the shapefile
-    gdf = gpd.read_file(absolute_path)
+    gdf = gpd.read_file(shapefile)
 
     # Create a Point object from the coordinates
     point = Point(long, lat)
