@@ -72,7 +72,7 @@ def get_user_information(k1,k2,k3):
         hour = st.slider("Hour:", min_value=0, max_value=24, key="hour")
         place = st.radio("Place:", ("In park", "In public housing", "In station"), key=k3)
 
-    return gender, race, age, predict, date, hour, place
+    return gender, race, age, date, hour, place
 
 
 def get_user_input_method():
@@ -80,7 +80,7 @@ def get_user_input_method():
 
 st.title("New York Crime Prediction")
 input_method = get_user_input_method()
-gender, race, age, predict, date, hour, place=get_user_information("gender","race","place")
+gender, race, age, date, hour, place=get_user_information("gender","race","place")
 
 
 if input_method == "Text Input":
