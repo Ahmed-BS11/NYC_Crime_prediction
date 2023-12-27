@@ -4,6 +4,8 @@ from streamlit_folium import st_folium,folium_static
 from geopy.geocoders import Nominatim
 from datetime import datetime
 import backend as backend
+import geopandas as gpd
+from shapely.geometry import Point
 
 def get_coordinates(destination):
     geolocator = Nominatim(user_agent="NYC_crimes")
@@ -17,22 +19,37 @@ def get_coordinates(destination):
 def get_pos(lat,lng):
     return lat,lng
 
+shapefile='geo_export_84578745-538d-401a-9cb5-34022c705879.shp'
+def get_precinct(lat, long):
+    # Load the shapefile
+    gdf = gpd.read_file(shapefile)
+
+    # Create a Point object from the coordinates
+    point = Point(long, lat)
+
+    # Find the precinct that contains the point
+    for _, row in gdf.iterrows():
+        if row['geometry'].contains(point):
+            return row['precinct']
+    return None
+
+
 def generate_base_map(default_location=[40.704467, -73.892246], default_zoom_start=11, min_zoom=11, max_zoom=15):
     base_map = folium.Map(location=default_location, control_scale=True, zoom_start=default_zoom_start,
                           min_zoom=min_zoom, max_zoom=max_zoom, max_bounds=True, min_lat=40.47739894,
                           min_lon=-74.25909008, max_lat=40.91617849, max_lon=-73.70018092)
     return base_map
 
-def get_user_information():
+def get_user_information(k1,k2,k3):
     with st.sidebar:
         st.header("Enter your information")
-        gender = st.radio("Gender:", ["Male", "Female"], key="gender")
+        gender = st.radio("Gender:", ["Male", "Female"], key=k1)
         race = st.selectbox("Race:", ['WHITE', 'WHITE HISPANIC', 'BLACK', 'ASIAN / PACIFIC ISLANDER', 'BLACK HISPANIC',
-                                      'AMERICAN INDIAN/ALASKAN NATIVE', 'OTHER'], key="race")
+                                      'AMERICAN INDIAN/ALASKAN NATIVE', 'OTHER'], key=k2)
         age = st.slider("Age:", 0, 120, key="age")
         date = st.date_input("Date:", datetime.now(), key="date")
         hour = st.slider("Hour:", min_value=0, max_value=24, key="hour")
-        place = st.radio("Place:", ("In park", "In public housing", "In station"), key="place")
+        place = st.radio("Place:", ("In park", "In public housing", "In station"), key=k3)
         _, col, _ = st.sidebar.columns(3)
         with col:
             predict = st.button("Predict", key="predict")
@@ -44,8 +61,8 @@ def get_user_input_method():
     return st.radio("Choose input method:", ["Text Input", "Map Click"])
 
 st.title("New York Crime Prediction")
-get_user_information()
 input_method = get_user_input_method()
+get_user_information("gender","race","place")
 
 if input_method == "Text Input":
     destination = st.text_input("Enter your destination:")
@@ -53,6 +70,8 @@ if input_method == "Text Input":
         coordinates = get_coordinates(destination)
         lat=coordinates[0]
         long=coordinates[1]
+        precinct=get_precinct(lat, long)
+        print(precinct)
         if coordinates:
             st.success(f"Coordinates for {destination}: {coordinates}")
             # Create a map with the destination marker
@@ -62,6 +81,7 @@ if input_method == "Text Input":
             folium_static(base_map)
         else:
             st.error("Unable to retrieve coordinates for the given destination.")
+        
 
 elif input_method == "Map Click":
     base_map = generate_base_map()
@@ -75,6 +95,8 @@ elif input_method == "Map Click":
 
     lat = data[0]
     long = data[1]
+    precinct=get_precinct(lat, long)
+    print(precinct)
 
     
 """
