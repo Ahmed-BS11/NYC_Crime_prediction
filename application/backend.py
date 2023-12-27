@@ -1,7 +1,7 @@
 import joblib
 import pandas as pd
 
-model=joblib.load("/models/lgbm.joblib")
+model=joblib.load(r"models\lgbm.joblib")
 
 def create_df():
     df=pd.dataframe()
