@@ -104,16 +104,11 @@ if input_method == "Text Input":
             with col:
                 predict = st.button("Predict", key="predict")
             if predict:
-                if lat=='' or long == '' or precinct==None :
-                    st.error("Please make sure that you selected a location on the map")    
-                    if st.button("Okay"):
-                        pass
-                else:
-                    X = backend.create_df(date, hour, lat, long, place, age, race, gender, precinct, borough)
-                    pred, crimes = backend.predict(X)
-                    st.markdown(f"You are likely to be a victim of: **{pred}**")
-                    st.markdown(f"#### Some of the crimes types are the following: ")
-                    st.markdown(crimes)
+                X = backend.create_df(date, hour, lat, long, place, age, race, gender, precinct, borough)
+                pred, crimes = backend.predict(X)
+                st.markdown(f"You are likely to be a victim of: **{pred}**")
+                st.markdown(f"#### Some of the crimes types are the following: ")
+                st.markdown(crimes)
         else:
             st.error("Unable to retrieve coordinates for the given destination.")
         
