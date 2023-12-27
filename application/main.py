@@ -144,6 +144,6 @@ elif input_method == "Map Click":
         else:
             X = backend.create_df(date, hour, lat, long, place, age, race, gender, precinct, borough)
             pred, crimes = backend.predict(X)
-            st.markdown(f"You are likely to be a victim of: **{pred}**")
+            st.markdown(f"You are likely to be a victim of a : **{pred}** crime")
             st.markdown(f"#### Some of the crimes types are the following: ")
             st.markdown(crimes)
