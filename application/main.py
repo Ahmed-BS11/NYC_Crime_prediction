@@ -100,12 +100,9 @@ if input_method == "Text Input":
             base_map = folium.Map(location=coordinates, zoom_start=15)
             folium.Marker(location=coordinates, popup=destination).add_to(base_map)
             
-            # Display the map
-            map_container = st.empty()
-            map_container.folium_static(base_map)
         else:
             st.error("Unable to retrieve coordinates for the given destination.")
-            
+
         _, col, _ = st.columns(3)
         
         with col:
