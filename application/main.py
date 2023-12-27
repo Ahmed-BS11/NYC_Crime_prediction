@@ -30,6 +30,7 @@ def get_precinct_and_borough(lat, long):
     # Find the precinct that contains the point
     for _, row in gdf.iterrows():
         if row['geometry'].contains(point):
+            print(row)
             return row['precinct'], row['borough']
     return None
 
