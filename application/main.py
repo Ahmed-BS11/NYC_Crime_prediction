@@ -20,7 +20,7 @@ def get_pos(lat,lng):
     return lat,lng
 
 shapefile='geo_export_84578745-538d-401a-9cb5-34022c705879.shp'
-def get_precinct(lat, long):
+def get_precinct_and_borough(lat, long):
     # Load the shapefile
     gdf = gpd.read_file(shapefile)
 
@@ -30,7 +30,7 @@ def get_precinct(lat, long):
     # Find the precinct that contains the point
     for _, row in gdf.iterrows():
         if row['geometry'].contains(point):
-            return row['precinct']
+            return row['precinct'], row['borough']
     return None
 
 
@@ -70,8 +70,8 @@ if input_method == "Text Input":
         coordinates = get_coordinates(destination)
         lat=coordinates[0]
         long=coordinates[1]
-        precinct=get_precinct(lat, long)
-        print(precinct)
+        precinct,borough=get_precinct_and_borough(lat, long)
+        print(precinct,borough)
         if coordinates:
             st.success(f"Coordinates for {destination}: {coordinates}")
             # Create a map with the destination marker
@@ -95,8 +95,8 @@ elif input_method == "Map Click":
 
     lat = data[0]
     long = data[1]
-    precinct=get_precinct(lat, long)
-    print(precinct)
+    precinct,borough=get_precinct_and_borough(lat, long)
+    print(precinct,borough)
 
     
 """
