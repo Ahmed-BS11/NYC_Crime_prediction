@@ -76,7 +76,7 @@ def get_user_information(k1,k2,k3):
 
 
 def get_user_input_method():
-    return st.radio("Choose input method:", ["Text Input", "Map Click"])
+    return st.radio("Choose input method:", [ "Map Click","Text Input"])
 
 st.title("New York Crime Prediction")
 input_method = get_user_input_method()
