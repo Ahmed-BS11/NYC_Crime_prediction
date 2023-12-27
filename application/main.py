@@ -96,6 +96,7 @@ if input_method == "Text Input":
         print(precinct,borough)
         if coordinates:
             st.success(f"Coordinates for {destination}: {coordinates}")
+            st.success(f'precinct = {precinct},borough ={borough} ')
             # Create a map with the destination marker
             base_map = folium.Map(location=coordinates, zoom_start=15)
             folium.Marker(location=coordinates, popup=destination).add_to(base_map)
@@ -119,6 +120,8 @@ elif input_method == "Map Click":
     long = data[1]
     precinct,borough=get_precinct_and_borough(lat, long)
     print(precinct,borough)
+    st.success(f"Coordinates are {lat}: {long}")
+    st.success(f'precinct = {precinct},borough ={borough} ')
 
     
 """
