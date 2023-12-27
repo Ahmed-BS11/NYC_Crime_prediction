@@ -29,8 +29,8 @@ def lon_lat_to_utm(lon, lat):
 
     return utm_x, utm_y
 
-shapefile='geo_export_84578745-538d-401a-9cb5-34022c705879.shp'
-borough_sh='borough/nybb.shp'
+shapefile='application/geo_export_84578745-538d-401a-9cb5-34022c705879.shp'
+borough_sh='application/borough/nybb.shp'
 
 def get_precinct_and_borough(lat, lon):
     # Load the shapefiles
