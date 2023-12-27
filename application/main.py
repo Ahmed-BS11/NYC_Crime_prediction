@@ -19,7 +19,7 @@ def get_coordinates(destination):
 def get_pos(lat,lng):
     return lat,lng
 
-shapefile=r'application\geo_export_84578745-538d-401a-9cb5-34022c705879.shp'
+shapefile=r'C:\Users\ahmed\Desktop\Supcom\INDP3_AIM\P2\NYC_Crime_prediction\application\geo_export_84578745-538d-401a-9cb5-34022c705879.shp'
 def get_precinct_and_borough(lat, long):
     # Load the shapefile
     gdf = gpd.read_file(shapefile)
