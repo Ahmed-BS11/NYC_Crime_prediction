@@ -92,7 +92,7 @@ if input_method == "Text Input":
     if predict:
         coordinates = get_coordinates(destination)
         lat=coordinates[0]
-        long=coordinates[1]
+        long=coordinates[1] 
         precinct,borough=get_precinct_and_borough(lat, long)
         print(precinct,borough)
         
@@ -108,9 +108,6 @@ if input_method == "Text Input":
         st.markdown(f"You are likely to be a victim of: **{pred}**")
         st.markdown(f"#### Some of the crimes types are the following: ")
         st.markdown(crimes)
-    else:
-        st.error("Unable to retrieve coordinates for the given destination.")
-    
 
 elif input_method == "Map Click":
     base_map = generate_base_map()
