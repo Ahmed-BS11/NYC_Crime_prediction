@@ -95,24 +95,24 @@ if input_method == "Text Input":
             st.success(f"Coordinates for {destination}: {coordinates}")
             st.success(f'precinct = {precinct},borough ={borough} ')
             # Create a map with the destination marker
-            base_map = folium.Map(location=coordinates, zoom_start=15)
-            folium.Marker(location=coordinates, popup=destination).add_to(base_map)
-            # Display the map
-            folium_static(base_map)
-            _, col, _ = st.columns(3)
-            with col:
-                predict = st.button("Predict", key="predict")
-            if predict:
-                if lat=='' or long == '' or precinct==None :
-                    st.error("Please make sure that you selected a location on the map")    
-                    if st.button("Okay"):
-                        pass
-                else:
-                    X = backend.create_df(date, hour, lat, long, place, age, race, gender, precinct, borough)
-                    pred, crimes = backend.predict(X)
-                    st.markdown(f"You are likely to be a victim of: **{pred}**")
-                    st.markdown(f"#### Some of the crimes types are the following: ")
-                    st.markdown(crimes)
+        base_map = folium.Map(location=coordinates, zoom_start=15)
+        folium.Marker(location=coordinates, popup=destination).add_to(base_map)
+        # Display the map
+        folium_static(base_map)
+        _, col, _ = st.columns(3)
+        with col:
+            predict = st.button("Predict", key="predict")
+        if predict:
+            if lat=='' or long == '' or precinct==None :
+                st.error("Please make sure that you selected a location on the map")    
+                if st.button("Okay"):
+                    pass
+            else:
+                X = backend.create_df(date, hour, lat, long, place, age, race, gender, precinct, borough)
+                pred, crimes = backend.predict(X)
+                st.markdown(f"You are likely to be a victim of: **{pred}**")
+                st.markdown(f"#### Some of the crimes types are the following: ")
+                st.markdown(crimes)
         else:
             st.error("Unable to retrieve coordinates for the given destination.")
         
