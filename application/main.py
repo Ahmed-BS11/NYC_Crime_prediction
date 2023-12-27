@@ -78,6 +78,13 @@ def get_user_information(k1,k2,k3):
 def get_user_input_method():
     return st.radio("Choose input method:", ["Type your destination","Select destination on Map"])
 
+st.set_page_config(
+    page_title="NYC Crime Prediction",
+    page_icon="🌍",  # You can use any emoji or a URL to an image
+    layout="wide",  # or "centered" or "wide"
+    initial_sidebar_state="expanded",  # or "collapsed"
+)
+
 st.title("New York Crime Prediction")
 input_method = get_user_input_method()
 gender, race, age, date, hour, place=get_user_information("gender","race","place")
