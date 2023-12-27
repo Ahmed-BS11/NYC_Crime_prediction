@@ -2,13 +2,7 @@ import joblib
 import pandas as pd
 import numpy as np
 
-#model=joblib.load(r"models/lgbm.joblib")
-try:
-    model = joblib.load(r"models/lgbm.joblib")
-except FileNotFoundError:
-    print("Model file not found.")
-except Exception as e:
-    print(f"An error occurred: {e}")
+model=joblib.load(r"models/lgbm.joblib")
 
     
 def create_df(date, hour, latitude, longitude, place, age, race, gender, precinct, borough):
