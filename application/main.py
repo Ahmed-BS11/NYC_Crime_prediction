@@ -7,15 +7,23 @@ import backend as backend
 import geopandas as gpd
 from shapely.geometry import Point
 from pyproj import Proj, transform
+from geopy.exc import GeocoderTimedOut
+import time
 
 def get_coordinates(destination):
     geolocator = Nominatim(user_agent="NYC_crimes_detect")
     location = geolocator.geocode(destination)
+    retries = 3
+    for attempt in range(retries):
+        try:
+            location = geolocator.geocode(location)
+            return location
+        except GeocoderTimedOut:
+            print(f"Geocoding attempt {attempt + 1} timed out. Retrying after a short delay.")
+            time.sleep(2)  # Add a delay before retrying
 
-    if location:
-        return location.latitude, location.longitude
-    else:
-        return None
+    print(f"Geocoding failed after {retries} attempts.")
+    return None
 
 def get_pos(lat,lng):
     return lat,lng
