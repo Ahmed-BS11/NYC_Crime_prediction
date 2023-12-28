@@ -12,18 +12,27 @@ import time
 
 def get_coordinates(destination):
     geolocator = Nominatim(user_agent="NYC_crimes_detect")
-    location = geolocator.geocode(destination)
-    retries = 3
-    for attempt in range(retries):
+    
+    max_attempts = 3
+    attempt = 0
+    timeout_seconds = 10
+    
+    while attempt < max_attempts:
         try:
-            location = geolocator.geocode(location)
-            return location
+            location = geolocator.geocode(destination, timeout=timeout_seconds)
+            if location:
+                return location
         except GeocoderTimedOut:
             print(f"Geocoding attempt {attempt + 1} timed out. Retrying after a short delay.")
-            time.sleep(10)  # Add a delay before retrying
+            time.sleep(2)  # Add a delay before retrying
+        except Exception as e:
+            print(f"Geocoding attempt {attempt + 1} failed: {e}")
+            # Handle other exceptions if needed
+        attempt += 1
 
-    print(f"Geocoding failed after {retries} attempts.")
+    print(f"Geocoding failed after {max_attempts} attempts.")
     return None
+
 
 def get_pos(lat,lng):
     return lat,lng
