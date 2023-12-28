@@ -7,32 +7,33 @@ import backend as backend
 import geopandas as gpd
 from shapely.geometry import Point
 from pyproj import Proj, transform
-from geopy.exc import GeocoderTimedOut
-import time
+import requests
 
 def get_coordinates(destination):
-    geolocator = Nominatim(user_agent="NYC_crimes_detect")
-    
-    max_attempts = 3
-    attempt = 0
-    timeout_seconds = 10
-    
-    while attempt < max_attempts:
-        try:
-            location = geolocator.geocode(destination, timeout=timeout_seconds)
-            if location:
-                return location
-        except GeocoderTimedOut:
-            print(f"Geocoding attempt {attempt + 1} timed out. Retrying after a short delay.")
-            time.sleep(2)  # Add a delay before retrying
-        except Exception as e:
-            print(f"Geocoding attempt {attempt + 1} failed: {e}")
-            # Handle other exceptions if needed
-        attempt += 1
+    base_url = "https://nominatim.openstreetmap.org/search"
+    params = {
+        "q": destination,
+        "format": "json",
+        "limit": 1,
+    }
 
-    print(f"Geocoding failed after {max_attempts} attempts.")
-    return None
+    try:
+        response = requests.get(base_url, params=params)
+        response.raise_for_status()
+        data = response.json()
 
+        if data:
+            # Extract latitude and longitude from the response
+            lat = float(data[0]["lat"])
+            lon = float(data[0]["lon"])
+            return lat, lon
+        else:
+            print("Location not found.")
+            return None
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error: {e}")
+        return None
 
 def get_pos(lat,lng):
     return lat,lng
