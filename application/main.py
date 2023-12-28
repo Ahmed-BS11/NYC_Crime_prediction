@@ -9,7 +9,7 @@ from shapely.geometry import Point
 from pyproj import Proj, transform
 
 def get_coordinates(destination):
-    geolocator = Nominatim(user_agent="NYC_crimes")
+    geolocator = Nominatim(user_agent="NYC_crimes_detect")
     location = geolocator.geocode(destination)
 
     if location:
@@ -76,7 +76,7 @@ def get_user_information(k1,k2,k3):
 
 
 def get_user_input_method():
-    return st.radio("Choose input method:", ["Type your destination","Select destination on Map"])
+    return st.radio("Choose input method:", ["Select destination on Map","Type your destination"])
 
 st.set_page_config(
     page_title="NYC Crime Prediction",
