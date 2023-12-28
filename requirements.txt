@@ -9,6 +9,7 @@ joblib
 scikit-learn
 scikit-plot
 xgboost
+catboost
 lightgbm
 geopy
 geopandas
