@@ -20,7 +20,7 @@ def get_coordinates(destination):
             return location
         except GeocoderTimedOut:
             print(f"Geocoding attempt {attempt + 1} timed out. Retrying after a short delay.")
-            time.sleep(2)  # Add a delay before retrying
+            time.sleep(10)  # Add a delay before retrying
 
     print(f"Geocoding failed after {retries} attempts.")
     return None
