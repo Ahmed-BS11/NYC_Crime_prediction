@@ -115,24 +115,25 @@ if input_method == "Type your destination":
         predict = st.button("Predict", key="predict")
     if predict:
         coordinates = get_coordinates(destination)
-        lat=coordinates[0]
-        long=coordinates[1] 
-        precinct,borough=get_precinct_and_borough(lat, long)
-        if borough:        
-            st.success(f"Coordinates for {destination}: {coordinates}")
-            st.success(f'precinct = {precinct},borough ={borough} ')
-            # Create a map with the destination marker
-            base_map = folium.Map(location=coordinates, zoom_start=15)
-            folium.Marker(location=coordinates, popup=destination).add_to(base_map)
-            # Display the map
-            folium_static(base_map)
-            X = backend.create_df(date, hour, lat, long, place, age, race, gender, precinct, borough)
-            pred, crimes = backend.predict(X)
-            st.markdown(f"You are likely to be a victim of a: **{pred}** crime")
-            st.markdown(f"#### Some of the crimes types are the following: ")
-            st.markdown(crimes)
-        else:
-            st.error("Select a destination in NYC")
+        if coordinates:
+            lat=coordinates[0]
+            long=coordinates[1] 
+            precinct,borough=get_precinct_and_borough(lat, long)
+            if borough:        
+                st.success(f"Coordinates for {destination}: {coordinates}")
+                st.success(f'precinct = {precinct},borough ={borough} ')
+                # Create a map with the destination marker
+                base_map = folium.Map(location=coordinates, zoom_start=15)
+                folium.Marker(location=coordinates, popup=destination).add_to(base_map)
+                # Display the map
+                folium_static(base_map)
+                X = backend.create_df(date, hour, lat, long, place, age, race, gender, precinct, borough)
+                pred, crimes = backend.predict(X)
+                st.markdown(f"You are likely to be a victim of a: **{pred}** crime")
+                st.markdown(f"#### Some of the crimes types are the following: ")
+                st.markdown(crimes)
+            else:
+                st.error("Select a destination in NYC")
 
 elif input_method == "Select destination on Map":
     base_map = generate_base_map()
